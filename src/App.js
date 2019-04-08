@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import Search from './Search';
+import Table from './Table';
 import './App.css';
+
 
 const list = [
   {
@@ -25,27 +28,32 @@ class App extends Component {
     super(props);
     this.state = {
       list,
+      searchTerm: '',
     }
+  }
+
+  onSearchChange = (event) => {
+    this.setState({ searchTerm:event.target.value });
   }
 
   onDismiss = id => {
     const updatedList = this.state.list.filter(item =>  item.objectID !== id);
-    this.setState({ list: updatedList})
+    this.setState({ list: updatedList });
   };
 
   render() {
+    const { list, searchTerm } = this.state;
     return (
       <div className="App">
-        {this.state.list.map(item =>
-            <div key={item.objectID}>
-              <a href={item.url} target="_blank" rel="noopener noreferrer"><h1>{item.title}</h1></a>
-              <p>{item.author}</p>
-              <span>
-                <button onClick={() => this.onDismiss(item.objectID)} type="button"> Dismiss
-                </button>
-              </span>
-            </div>
-        )}
+        <Search
+          value={searchTerm}
+          onChange={this.onSearchChange}
+        />
+        <Table
+          list={list}
+          pattern={searchTerm}
+          onDismiss={this.onDismiss}
+        />
       </div>
     );
   }
