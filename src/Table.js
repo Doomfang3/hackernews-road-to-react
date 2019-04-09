@@ -1,8 +1,6 @@
 import React from "react";
 import Button from "./Button";
 
-const isSearched = searchTerm => item =>
-  item.title.toLowerCase().includes(searchTerm.toLowerCase());
   const largeColumn = {
     width: '40%',
   };
@@ -13,13 +11,13 @@ const isSearched = searchTerm => item =>
     width: '10%',
   };
 
-const Table = ({ list, pattern, onDismiss }) => (
+const Table = ({ list, onDismiss }) => (
   <div className="table">
-    {list.filter(isSearched(pattern)).map(item => (
+    {list.map(item => (
       <div key={item.objectID} className="table-row">
         <span style={largeColumn}>
-          <a href={item.url} target="_blank" rel="noopener noreferrer">
-            {item.title}
+          <a href={item.url || item.story_url} target="_blank" rel="noopener noreferrer">
+            {item.title || item.story_title}
           </a>
         </span>
         <span style={midColumn}>{item.author}</span>
