@@ -26,6 +26,11 @@ input {
   border: 1px solid #dddddd;
 }
 
+input:focus {
+  outline: none;
+  box-shadow: 0px 0px 5px rgb(94, 158, 214);
+}
+
 button {
   padding: 10px;
   border-radius: 5px;
