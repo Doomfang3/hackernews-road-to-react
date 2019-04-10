@@ -7,8 +7,8 @@ import {
   PATH_SEARCH,
   PARAM_SEARCH,
   PARAM_PAGE,
-  PARAM_HPP,
-} from '../../constants';
+  PARAM_HPP
+} from "../../constants";
 
 import Search from "../Search";
 import Table from "../Table";
@@ -124,8 +124,4 @@ class App extends React.Component {
 
 export default App;
 
-export {
-  Button,
-  Search,
-  Table
-};
+export { Button, Search, Table };

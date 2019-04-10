@@ -1,22 +1,26 @@
 import React from "react";
 import Button from "../Button";
 
-  const largeColumn = {
-    width: '40%',
-  };
-  const midColumn = {
-    width: '30%',
-  };
-  const smallColumn = {
-    width: '10%',
-  };
+const largeColumn = {
+  width: "40%"
+};
+const midColumn = {
+  width: "30%"
+};
+const smallColumn = {
+  width: "10%"
+};
 
 const Table = ({ list, onDismiss }) => (
   <div className="table">
     {list.map(item => (
       <div key={item.objectID} className="table-row">
         <span style={largeColumn}>
-          <a href={item.url || item.story_url} target="_blank" rel="noopener noreferrer">
+          <a
+            href={item.url || item.story_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {item.title || item.story_title}
           </a>
         </span>
