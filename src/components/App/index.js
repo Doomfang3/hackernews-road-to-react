@@ -8,8 +8,7 @@ import {
   PATH_SEARCH,
   PARAM_SEARCH,
   PARAM_PAGE,
-  PARAM_HPP,
-  SORTS
+  PARAM_HPP
 } from "../../constants";
 
 import Search from "../Search";
@@ -28,9 +27,7 @@ class App extends React.Component {
       searchKey: "",
       searchTerm: DEFAULT_QUERY,
       error: null,
-      isLoading: false,
-      sortKey: "NONE",
-      isSortReverse: false
+      isLoading: false
     };
   }
 
@@ -38,22 +35,8 @@ class App extends React.Component {
     return !this.state.results[searchTerm];
   };
 
-  setSearchTopStories = result => {
-    const { hits, page } = result;
-    const { searchKey, results } = this.state;
-
-    const oldHits =
-      results && results[searchKey] ? results[searchKey].hits : [];
-
-    const updatedHits = [...oldHits, ...hits];
-
-    this.setState({
-      results: {
-        ...results,
-        [searchKey]: { hits: updatedHits, page }
-      },
-      isLoading: false
-    });
+  setSearchTopStories = ({ hits, page }) => {
+    this.setState(updateSearchTopStoriesState(hits, page));
   };
 
   fetchSearchTopStories = (searchTerm, page = 0) => {
@@ -93,22 +76,8 @@ class App extends React.Component {
     });
   };
 
-  onSort = sortKey => {
-    const isSortReverse =
-      this.state.sortKey === sortKey && !this.state.isSortReverse;
-    this.setState({ sortKey, isSortReverse });
-  };
-
   render() {
-    const {
-      searchTerm,
-      results,
-      searchKey,
-      error,
-      isLoading,
-      sortKey,
-      isSortReverse
-    } = this.state;
+    const { searchTerm, results, searchKey, error, isLoading } = this.state;
     const page =
       (results && results[searchKey] && results[searchKey].page) || 0;
     const list =
@@ -130,13 +99,7 @@ class App extends React.Component {
             <p>Something went wrong.</p>
           </div>
         ) : (
-          <Table
-            list={list}
-            sortKey={sortKey}
-            isSortReverse={isSortReverse}
-            onSort={this.onSort}
-            onDismiss={this.onDismiss}
-          />
+          <Table list={list} onDismiss={this.onDismiss} />
         )}
         <div className="interactions">
           <ButtonWithLoading
@@ -155,6 +118,23 @@ const withLoading = Component => ({ isLoading, ...rest }) =>
   isLoading ? <Loading /> : <Component {...rest} />;
 
 const ButtonWithLoading = withLoading(Button);
+
+const updateSearchTopStoriesState = (hits, page) => ({
+  searchKey,
+  results
+}) => {
+  const oldHits = results && results[searchKey] ? results[searchKey].hits : [];
+
+  const updatedHits = [...oldHits, ...hits];
+
+  return {
+    results: {
+      ...results,
+      [searchKey]: { hits: updatedHits, page }
+    },
+    isLoading: false
+  };
+};
 
 export default App;
 

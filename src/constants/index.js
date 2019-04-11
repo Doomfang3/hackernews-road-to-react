@@ -7,6 +7,7 @@ export const PATH_SEARCH = "/search";
 export const PARAM_SEARCH = "query=";
 export const PARAM_PAGE = "page=";
 export const PARAM_HPP = "hitsPerPage=";
+// const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}&${PARAM_PAGE}`;
 export const SORTS = {
   NONE: list => list,
   TITLE: list => sortBy(list, 'title'),
@@ -14,4 +15,3 @@ export const SORTS = {
   COMMENTS: list => sortBy(list, 'num_comments').reverse(),
   POINTS: list => sortBy(list, 'points').reverse(),
 };
-// const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}&${PARAM_PAGE}`;

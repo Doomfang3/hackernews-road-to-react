@@ -16,61 +16,95 @@ const smallColumn = {
   width: "10%"
 };
 
-const Table = ({ list, sortKey, isSortReverse, onSort, onDismiss }) => {
-  const sortedList = SORTS[sortKey](list);
-  const reverseSortedList = isSortReverse ? sortedList.reverse() : sortedList;
-  return (
-    <div className="table">
-      <div className="table-header">
-        <span style={largeColumn}>
-          <Sort sortKey={"TITLE"} onSort={onSort} activeSortKey={sortKey}>
-            Title
-          </Sort>
-        </span>
-        <span style={midColumn}>
-          <Sort sortKey={"AUTHOR"} onSort={onSort} activeSortKey={sortKey}>
-            Author
-          </Sort>
-        </span>
-        <span style={smallColumn}>
-          <Sort sortKey={"COMMENTS"} onSort={onSort} activeSortKey={sortKey}>
-            Comments
-          </Sort>
-        </span>
-        <span style={smallColumn}>
-          <Sort sortKey={"POINTS"} onSort={onSort} activeSortKey={sortKey}>
-            Points
-          </Sort>
-        </span>
-        <span style={smallColumn}>Archive</span>
-      </div>
-      {reverseSortedList.map(item => (
-        <div key={item.objectID} className="table-row">
+class Table extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sortKey: "NONE",
+      isSortReverse: false
+    };
+  }
+
+  onSort = sortKey => {
+    const isSortReverse =
+      this.state.sortKey === sortKey && !this.state.isSortReverse;
+    this.setState({ sortKey, isSortReverse });
+  };
+
+  render() {
+    const { list, onDismiss } = this.props;
+    const { sortKey, isSortReverse } = this.state;
+    const sortedList = SORTS[sortKey](list);
+    const reverseSortedList = isSortReverse ? sortedList.reverse() : sortedList;
+    return (
+      <div className="table">
+        <div className="table-header">
           <span style={largeColumn}>
-            <a
-              href={item.url || item.story_url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Sort
+              sortKey={"TITLE"}
+              onSort={this.onSort}
+              activeSortKey={sortKey}
             >
-              {item.title || item.story_title}
-            </a>
+              Title
+            </Sort>
           </span>
-          <span style={midColumn}>{item.author}</span>
-          <span style={smallColumn}>{item.num_comments}</span>
-          <span style={smallColumn}>{item.points}</span>
+          <span style={midColumn}>
+            <Sort
+              sortKey={"AUTHOR"}
+              onSort={this.onSort}
+              activeSortKey={sortKey}
+            >
+              Author
+            </Sort>
+          </span>
           <span style={smallColumn}>
-            <Button
-              onClick={() => onDismiss(item.objectID)}
-              className="button-inline"
+            <Sort
+              sortKey={"COMMENTS"}
+              onSort={this.onSort}
+              activeSortKey={sortKey}
             >
-              Dismiss
-            </Button>
+              Comments
+            </Sort>
           </span>
+          <span style={smallColumn}>
+            <Sort
+              sortKey={"POINTS"}
+              onSort={this.onSort}
+              activeSortKey={sortKey}
+            >
+              Points
+            </Sort>
+          </span>
+          <span style={smallColumn}>Archive</span>
         </div>
-      ))}
-    </div>
-  );
-};
+        {reverseSortedList.map(item => (
+          <div key={item.objectID} className="table-row">
+            <span style={largeColumn}>
+              <a
+                href={item.url || item.story_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {item.title || item.story_title}
+              </a>
+            </span>
+            <span style={midColumn}>{item.author}</span>
+            <span style={smallColumn}>{item.num_comments}</span>
+            <span style={smallColumn}>{item.points}</span>
+            <span style={smallColumn}>
+              <Button
+                onClick={() => onDismiss(item.objectID)}
+                className="button-inline"
+              >
+                Dismiss
+              </Button>
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+}
 
 Table.propTypes = {
   list: PropTypes.arrayOf(
